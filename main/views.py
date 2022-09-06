@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from . models import Task
 from .forms import CreateForm
+from django.views.generic.edit import UpdateView, DeleteView
 
 # rendering home page and create new task
 def index(request):
@@ -14,3 +15,16 @@ def index(request):
             task.save()
 
     return render(request, 'index.html', {"tasks": query_set, "form":form})
+
+
+class TaskUpdate(UpdateView):
+    model = Task
+    fields = '__all__'
+    template_name = 'main/task_form.html'
+    success_url = '/'
+
+
+class DeleteView(DeleteView):
+    model = Task
+    context_object_name = 'tasks'
+    success_url = '/'
