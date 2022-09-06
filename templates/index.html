@@ -17,24 +17,33 @@
             <div class="col col-xl-10">
 
                 <div class="card" style="border-radius: 15px;">
-                {% if request.user.is_authenticated %}
-                        <a href="{% url 'logout' %}" >logout</a>
-                        {% else %}
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'logout' %}">logout</a>
+                    {% else %}
                         <a href="{% url 'login' %}">login </a>
                     {% endif %}
                     <div class="card-body p-5">
 
 
                         <h6 class="mb-3">Awesome Todo List</h6>
+                        {% if request.resolver_match.url_name == 'task-create' %}
+                            <form class="d-flex justify-content-center align-items-center mb-4">
+                                <div class="form-outline flex-fill">
+                                    {{ form.title.label }}:
+                                    {{ form.title }}
+                                    {{ form.complete.label }}:
+                                    {{ form.complete }}
+                                    <label class="form-label" for="form3">What do you need to do today?</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg ms-2">Add</button>
+                            </form>
+                        {% else %}
+                            <form method="get" class="d-flex justify-content-xl-end align-items-center mb-4">
+                                <input type="text" placeholder="search" name="search" value="{{ search_input }}">
+                                <input type="submit" value="search">
 
-                        <form class="d-flex justify-content-center align-items-center mb-4">
-                            <div class="form-outline flex-fill">
-                                {{ form.title }}
-                                {{ form.complete }}
-                                <label class="form-label" for="form3">What do you need to do today?</label>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-lg ms-2">Add</button>
-                        </form>
+                            </form>
+                        {% endif %}
 
                         <ul class="list-group mb-0">
                             {% for task in tasks %}
@@ -48,11 +57,13 @@
                                             <s>{{ task.title }}</s>
                                         </div>
 
-                                        <a href="{% url 'task-update' task.id %}" class="delete-confirmation" data-mdb-toggle="tooltip"
+                                        <a href="{% url 'task-update' task.id %}" class="delete-confirmation"
+                                           data-mdb-toggle="tooltip"
                                            title="Remove item">
                                             edit
                                         </a>
-                                        <a href="{% url 'delete-view' task.id %}" class="delete-confirmation" data-mdb-toggle="tooltip"
+                                        <a href="{% url 'delete-view' task.id %}" class="delete-confirmation"
+                                           data-mdb-toggle="tooltip"
                                            title="Remove item">
                                             delete
                                         </a>
@@ -65,11 +76,13 @@
                                                    aria-label="..."/>
                                             {{ task.title }}
                                         </div>
-                                         <a href="{% url 'task-update' task.id %}" class="delete-confirmation" data-mdb-toggle="tooltip"
+                                        <a href="{% url 'task-update' task.id %}" class="delete-confirmation"
+                                           data-mdb-toggle="tooltip"
                                            title="Remove item">
                                             edit
                                         </a>
-                                        <a href="{% url 'delete-view' task.id %}" class="delete-confirmation" data-mdb-toggle="tooltip"
+                                        <a href="{% url 'delete-view' task.id %}" class="delete-confirmation"
+                                           data-mdb-toggle="tooltip"
                                            title="Remove item">
                                             delete
                                         </a>
